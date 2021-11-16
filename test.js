@@ -1,28 +1,28 @@
-const assert = require('assert');
-const archy = require('./');
+import * as assert from 'assert';
+import * as archy from './index.js';
 
 async function test(name, fn) {
   try {
     await fn();
     console.log('\x1b[32m%s\x1b[0m \x1b[33mOK\x1b[0m', name);
-  } catch(e) {
+  } catch (e) {
     console.log('\x1b[31m%s\x1b[0m', name, e);
   }
 }
 
 const beepNode = {
-  label : 'beep',
-  nodes : [
+  label: 'beep',
+  nodes: [
     'ity',
     {
-      label : 'boop',
-      nodes : [
+      label: 'boop',
+      nodes: [
         {
-          label : 'o_O',
-          nodes : [
+          label: 'o_O',
+          nodes: [
             {
-              label : 'oh',
-              nodes : [ 'hello', 'puny' ]
+              label: 'oh',
+              nodes: ['hello', 'puny']
             },
             'human'
           ]
@@ -34,18 +34,18 @@ const beepNode = {
 };
 
 const multiLineBeepNode = {
-  label : 'beep\none\ntwo',
-  nodes : [
+  label: 'beep\none\ntwo',
+  nodes: [
     'ity',
     {
-      label : 'boop',
-      nodes : [
+      label: 'boop',
+      nodes: [
         {
-          label : 'o_O\nwheee',
-          nodes : [
+          label: 'o_O\nwheee',
+          nodes: [
             {
-              label : 'oh',
-              nodes : [ 'hello', 'puny\nmeat' ]
+              label: 'oh',
+              nodes: ['hello', 'puny\nmeat']
             },
             'creature'
           ]
@@ -75,37 +75,37 @@ test('[NPM style] beep', () => {
 test('[NPM style] multi-line', () => {
   const s = archy.draw(multiLineBeepNode, { style: archy.STYLE.NPM });
   assert.strictEqual(s, [
-      'beep',
-      '│ one',
-      '│ two',
-      '├── ity',
-      '└─┬ boop',
-      '  ├─┬ o_O',
-      '  │ │ wheee',
-      '  │ ├─┬ oh',
-      '  │ │ ├── hello',
-      '  │ │ └── puny',
-      '  │ │     meat',
-      '  │ └── creature',
-      '  └── party',
-      '      time!',
-      ''
+    'beep',
+    '│ one',
+    '│ two',
+    '├── ity',
+    '└─┬ boop',
+    '  ├─┬ o_O',
+    '  │ │ wheee',
+    '  │ ├─┬ oh',
+    '  │ │ ├── hello',
+    '  │ │ └── puny',
+    '  │ │     meat',
+    '  │ └── creature',
+    '  └── party',
+    '      time!',
+    ''
   ].join('\n'));
 });
 
 test('[NPM style] non-unicode', () => {
-  const s = archy.draw(beepNode, { style: archy.STYLE.NPM, unicode : false });
+  const s = archy.draw(beepNode, { style: archy.STYLE.NPM, unicode: false });
   assert.strictEqual(s, [
-      'beep',
-      '+-- ity',
-      '`-- boop',
-      '  +-- o_O',
-      '  | +-- oh',
-      '  | | +-- hello',
-      '  | | `-- puny',
-      '  | `-- human',
-      '  `-- party!',
-      ''
+    'beep',
+    '+-- ity',
+    '`-- boop',
+    '  +-- o_O',
+    '  | +-- oh',
+    '  | | +-- hello',
+    '  | | `-- puny',
+    '  | `-- human',
+    '  `-- party!',
+    ''
   ].join('\n'));
 });
 
@@ -175,37 +175,37 @@ test('[FMW style] beep', () => {
 test('[FMW style] multi-line', () => {
   const s = archy.draw(multiLineBeepNode, { style: archy.STYLE.FMW });
   assert.strictEqual(s, [
-      'beep',
-      'one',
-      'two',
-      '├── ity',
-      '└── boop',
-      '    ├── o_O',
-      '    │   wheee',
-      '    │   ├── oh',
-      '    │   │   ├── hello',
-      '    │   │   └── puny',
-      '    │   │       meat',
-      '    │   └── creature',
-      '    └── party',
-      '        time!',
-      ''
+    'beep',
+    'one',
+    'two',
+    '├── ity',
+    '└── boop',
+    '    ├── o_O',
+    '    │   wheee',
+    '    │   ├── oh',
+    '    │   │   ├── hello',
+    '    │   │   └── puny',
+    '    │   │       meat',
+    '    │   └── creature',
+    '    └── party',
+    '        time!',
+    ''
   ].join('\n'));
 });
 
 test('[FMW style] non-unicode', () => {
-  const s = archy.draw(beepNode, { style: archy.STYLE.FMW, unicode : false });
+  const s = archy.draw(beepNode, { style: archy.STYLE.FMW, unicode: false });
   assert.strictEqual(s, [
-      'beep',
-      '+-- ity',
-      '`-- boop',
-      '    +-- o_O',
-      '    |   +-- oh',
-      '    |   |   +-- hello',
-      '    |   |   `-- puny',
-      '    |   `-- human',
-      '    `-- party!',
-      ''
+    'beep',
+    '+-- ity',
+    '`-- boop',
+    '    +-- o_O',
+    '    |   +-- oh',
+    '    |   |   +-- hello',
+    '    |   |   `-- puny',
+    '    |   `-- human',
+    '    `-- party!',
+    ''
   ].join('\n'));
 });
 

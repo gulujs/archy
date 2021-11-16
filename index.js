@@ -1,54 +1,51 @@
-const STYLE = {
+export const STYLE = {
   NPM: 'NPM',
   FMW: 'FMW'
 };
 
-function draw(node, options) {
+export function draw(node, options) {
   const args = buildDrawArgs(node, options);
-  return drawStyle.apply(null, args);
+  return drawStyle(...args);
 }
 
-function drawAsync(node, options) {
+export function drawAsync(node, options) {
   const args = buildDrawArgs(node, options);
-  return drawStyleAsync.apply(null, args);
+  return drawStyleAsync(...args);
 }
 
 const styleMap = {
   NPM: {
-    rootNode(options, nodes) {
-      return options.chr('└') + options.chr('─')
-        + (nodes.length ? options.chr('┬') : options.chr('─')) + ' ';
+    rootNode({ chr }, nodes) {
+      return `${chr('└')}${chr('─')}${nodes.length ? chr('┬') : chr('─')} `;
     },
-    rootNodeNextPrefix(options) {
+    rootNodeNextPrefix(_options) {
       return '  ';
     },
-    childNode(options, last, nodes) {
-      return (last ? options.chr('└') : options.chr('├')) + options.chr('─')
-        + (nodes.length ? options.chr('┬') : options.chr('─')) + ' ';
+    childNode({ chr }, last, nodes) {
+      return `${last ? chr('└') : chr('├')}${chr('─')}${nodes.length ? chr('┬') : chr('─')} `;
     },
-    childNodeNextPrefix(options, last) {
-      return (last ? ' ' : options.chr('│')) + ' ';
+    childNodeNextPrefix({ chr }, last) {
+      return `${last ? ' ' : chr('│')} `;
     },
-    sep(options, nextPrefix, nodes) {
-      return '\n' + nextPrefix + (nodes.length ? options.chr('│') : ' ') + ' ';
+    sep({ chr }, nextPrefix, nodes) {
+      return `\n${nextPrefix}${nodes.length ? chr('│') : ' '} `;
     }
   },
   FMW: {
-    rootNode(options, nodes) {
-      return options.chr('└') + options.chr('─') + options.chr('─') + ' ';
+    rootNode({ chr }, _nodes) {
+      return `${chr('└')}${chr('─')}${chr('─')} `;
     },
-    rootNodeNextPrefix(options) {
+    rootNodeNextPrefix(_options) {
       return '    ';
     },
-    childNode(options, last, nodes) {
-      return (last ? options.chr('└') : options.chr('├'))
-      + options.chr('─') + options.chr('─') + ' ';
+    childNode({ chr }, last, _nodes) {
+      return `${last ? chr('└') : chr('├')}${chr('─')}${chr('─')} `;
     },
-    childNodeNextPrefix(options, last) {
-      return (last ? ' ' : options.chr('│')) + '   ';
+    childNodeNextPrefix({ chr }, last) {
+      return `${last ? ' ' : chr('│')}   `;
     },
-    sep(options, nextPrefix, nodes) {
-      return '\n' + nextPrefix;
+    sep(_options, nextPrefix, _nodes) {
+      return `\n${nextPrefix}`;
     }
   }
 };
@@ -64,12 +61,12 @@ function buildDrawArgs(node, options) {
     concurrency: options.concurrency
   };
 
-  let style = styleMap[options.style || STYLE.NPM];
+  const style = styleMap[options.style || STYLE.NPM];
   if (!style) {
     throw new Error(`Not supports style "${style}"`);
   }
 
-  return [style, node, opts, options.prefix || '', true, true]
+  return [style, node, opts, options.prefix || '', true, true];
 }
 
 function drawStyle(style, node, options, prefix, last, isRoot) {
@@ -88,7 +85,7 @@ function drawStyle(style, node, options, prefix, last, isRoot) {
     nextPrefix += style.rootNodeNextPrefix(options);
   }
 
-  tree += label.split('\n').join(style.sep(options, nextPrefix, nodes)) + '\n';
+  tree += `${label.split('\n').join(style.sep(options, nextPrefix, nodes))}\n`;
 
   for (let i = 0, l = nodes.length; i < l; i++) {
     tree += drawStyle(style, nodes[i], options, nextPrefix, i === l - 1, false);
@@ -113,12 +110,12 @@ async function drawStyleAsync(style, node, options, prefix, last, isRoot) {
     nextPrefix += style.rootNodeNextPrefix(options);
   }
 
-  tree += label.split('\n').join(style.sep(options, nextPrefix, nodes)) + '\n';
+  tree += `${label.split('\n').join(style.sep(options, nextPrefix, nodes))}\n`;
   return tree
     + (await map(
-        nodes,
-        (node, i) => drawStyleAsync(style, node, options, nextPrefix, i === nodes.length - 1, false),
-        options.concurrency
+      nodes,
+      (node, i) => drawStyleAsync(style, node, options, nextPrefix, i === nodes.length - 1, false),
+      options.concurrency
     )).join('');
 }
 
@@ -126,21 +123,9 @@ function buildGetLabelFn(options) {
   if (typeof options.label === 'function') {
     return node => options.label(node);
   } else if (typeof options.label === 'string') {
-    return node => {
-      if (typeof node === 'string') {
-        return node;
-      } else {
-        return node[options.label];
-      }
-    };
+    return node => (typeof node === 'string' ? node : node[options.label]);
   } else {
-    return node => {
-      if (typeof node === 'string') {
-        return node;
-      } else {
-        return node.label;
-      }
-    };
+    return node => (typeof node === 'string' ? node : node.label);
   }
 }
 
@@ -155,11 +140,11 @@ function buildGetNodesFn(options) {
 }
 
 const chars = {
-  '│' : '|',
-  '└' : '`',
-  '├' : '+',
-  '─' : '-',
-  '┬' : '-'
+  '│': '|',
+  '└': '`',
+  '├': '+',
+  '─': '-',
+  '┬': '-'
 };
 
 function buildGetCharFn(options) {
@@ -186,14 +171,8 @@ async function map(items, mapper, concurrency) {
   const results = [];
   for (let i = 0; i < n; i++) {
     const subItems = items.slice(concurrency * i, concurrency * (i + 1));
-    const r = await Promise.all(subItems.map((it, ii) => mapper(it, concurrency * i + ii)));
+    const r = await Promise.all(subItems.map((it, ii) => mapper(it, (concurrency * i) + ii)));
     results.push(r);
   }
   return Array.prototype.concat.apply([], results);
 }
-
-module.exports = {
-  draw,
-  drawAsync,
-  STYLE
-};

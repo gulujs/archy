@@ -68,5 +68,5 @@ beep
 
 ## License
 
-- [lunjs/archy - MIT](https://github.com/lunjs/archy/blob/master/LICENSE)
+- [lunjs/archy - MIT](LICENSE)
 - [substack/node-archy - MIT](https://github.com/substack/node-archy/blob/master/LICENSE)

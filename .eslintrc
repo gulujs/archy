@@ -1,0 +1,6 @@
+{
+    "extends": "@lunjs/eslint-config/js",
+    "env": {
+        "node": true
+    }
+}
