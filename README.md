@@ -1,15 +1,15 @@
-# @lunjs/archy
+# @gulujs/archy
 
 ## Installation
 
 ```
-npm install @lunjs/archy
+npm install @gulujs/archy
 ```
 
 ## Usage
 
 ```
-const archy = require('@lunjs/archy');
+const archy = require('@gulujs/archy');
 const s = archy.draw({
   label : 'beep',
   nodes : [
@@ -68,5 +68,5 @@ beep
 
 ## License
 
-- [lunjs/archy - MIT](LICENSE)
+- [MIT](LICENSE)
 - [substack/node-archy - MIT](https://github.com/substack/node-archy/blob/master/LICENSE)

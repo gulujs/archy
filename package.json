@@ -1,6 +1,6 @@
 {
-  "name": "@lunjs/archy",
-  "version": "0.1.0",
+  "name": "@gulujs/archy",
+  "version": "0.2.0",
   "description": "render nested hierarchies `npm ls` style with unicode pipes",
   "type": "module",
   "main": "index.js",
@@ -14,18 +14,19 @@
   ],
   "scripts": {
     "test": "node test.js",
-    "lint": "eslint --report-unused-disable-directives --ignore-path .gitignore ."
+    "lint": "eslint --report-unused-disable-directives --ignore-path .gitignore .",
+    "prepublishOnly": "npm run lint && npm test"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lunjs/archy.git"
+    "url": "git+https://github.com/gulujs/archy.git"
   },
   "author": "jKey Lu <jkeylu@gmail.com> (https://github.com/jkeylu)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/lunjs/archy/issues"
+    "url": "https://github.com/gulujs/archy/issues"
   },
-  "homepage": "https://github.com/lunjs/archy#readme",
+  "homepage": "https://github.com/gulujs/archy#readme",
   "keywords": [
     "hierarchy",
     "npm ls",
@@ -36,7 +37,7 @@
     "ascii"
   ],
   "devDependencies": {
-    "@lunjs/eslint-config": "^0.4.0",
-    "eslint": "^8.2.0"
+    "@gulujs/eslint-config": "^0.5.0",
+    "eslint": "^8.16.0"
   }
 }

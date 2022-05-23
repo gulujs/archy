@@ -1,5 +1,5 @@
 {
-    "extends": "@lunjs/eslint-config/js",
+    "extends": "@gulujs/eslint-config/js",
     "env": {
         "node": true
     }
