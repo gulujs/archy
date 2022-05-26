@@ -69,4 +69,3 @@ beep
 ## License
 
 - [MIT](LICENSE)
-- [substack/node-archy - MIT](https://github.com/substack/node-archy/blob/master/LICENSE)
